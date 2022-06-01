@@ -1,17 +1,18 @@
 export const initialState = {
-  basket: [],
+    clients: [],
 };
 
 export const actionTypes = {
-  ADD_TO_BASKET: "ADD_TO_BASKET",
+  GET_CLIENTS: "GET_CLIENTS",
 };
 
-export const reducer = (state, action) => {
+const reducer = (state, action) => {
+    console.log(action);
   switch (action.type) {
-    case "ADD_TO_BASKET":
+    case "GET_CLIENTS":
       return {
         ...state,
-        basket: [...state.basket, action.item],
+        clients: [...state.clients, action.item],
       };
 
     default:

@@ -5,6 +5,7 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import Registration from "./components/Registration";
 import Error from "./components/Error";
+import List from "./components/List";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route exact path="/home" element={<Home />} />
           <Route exact path="/registration" element={<Registration />} />
           <Route exact path="/error" element={<Error />} />
+          <Route exact path="/list" element={<List />} />
         </Routes>
       </StateProvider>
     </Router>
