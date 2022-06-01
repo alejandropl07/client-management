@@ -22,8 +22,9 @@ const theme = createTheme();
 
 export default function Login() {
   const [results, setResults] = useState();
- // const { data } = useContext(StateContext);
+  // const { data } = useContext(StateContext);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const login = (user) => dispatch(loginSuccess(user));
@@ -33,15 +34,19 @@ export default function Login() {
     const data = new FormData(event.currentTarget);
     //Consultar la API
     await clientAxios
-      .post("api/Authenticate/login", {username:  data.get("user"), password:  data.get("password")})
+      .post("api/Authenticate/login", {
+        username: data.get("user"),
+        password: data.get("password"),
+      })
       .then((response) => {
-       // setResults(response.data);
+        // setResults(response.data);
         /*  dispatch({
           type: actionTypes.LOGIN,
           user: results,
         });*/
         console.log(response.data);
-        login(response.data)
+        login(response.data);
+        navigate("/list");
       })
       .catch((error) => {
         console.log(error);
