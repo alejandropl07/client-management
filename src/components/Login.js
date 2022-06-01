@@ -1,5 +1,4 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
+import React, { useContext, useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -8,21 +7,45 @@ import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import clientAxios from "../config/axios";
+import { actionTypes } from "../reducer";
+import { StateContext, useStateValue } from "../StateProvider";
+
+import { useNavigate } from "react-router-dom";
+import { loginAction, loginSuccess } from "../actions/userAction";
+import { useDispatch } from "react-redux";
 
 const theme = createTheme();
 
 export default function Login() {
-  const handleSubmit = (event) => {
+  const [results, setResults] = useState();
+ // const { data } = useContext(StateContext);
+
+  const dispatch = useDispatch();
+
+  const login = (user) => dispatch(loginSuccess(user));
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    //Consultar la API
+    await clientAxios
+      .post("api/Authenticate/login", {username:  data.get("user"), password:  data.get("password")})
+      .then((response) => {
+       // setResults(response.data);
+        /*  dispatch({
+          type: actionTypes.LOGIN,
+          user: results,
+        });*/
+        console.log(response.data);
+        login(response.data)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (

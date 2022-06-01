@@ -7,10 +7,14 @@ import Registration from "./components/Registration";
 import Error from "./components/Error";
 import List from "./components/List";
 
+import store from "./store";
+import { Provider } from "react-redux";
+
 function App() {
   return (
     <Router>
-      <StateProvider>
+      <Provider store={store}>
+      {/* <StateProvider> */}
         <Routes>
           <Route exact path="/" element={<Login />} />
           <Route exact path="/home" element={<Home />} />
@@ -18,7 +22,8 @@ function App() {
           <Route exact path="/error" element={<Error />} />
           <Route exact path="/list" element={<List />} />
         </Routes>
-      </StateProvider>
+      {/* </StateProvider> */}
+      </Provider>
     </Router>
   );
 }

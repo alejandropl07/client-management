@@ -39,25 +39,8 @@ function List() {
       });
   };
 
-  const login = async () => {
-    await clientAxios
-      .post("api/Authenticate/login", { username: "string",  password: "Usuario2022*+" })
-      .then((response) => {
-        setResults(response.data);
-      /*  dispatch({
-          type: actionTypes.GET_CLIENTS,
-          item: results,
-        });*/
-        console.log(results);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   useEffect(() => {
    // register();
-    login();
   }, []);
   return <div>dsfsdfsdfdsfsfdfdfsdf</div>;
 }
