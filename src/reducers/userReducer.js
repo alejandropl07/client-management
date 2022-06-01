@@ -17,6 +17,12 @@ export default function (state = initialState, action) {
         user:   action.payload,
       };
 
+      case REGISTER:
+      return {
+        ...state,
+        error: null,
+      };
+
     default:
       return state;
   }

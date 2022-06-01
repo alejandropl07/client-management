@@ -26,3 +26,7 @@ export const loginSuccess = (user) => ({
   type: LOGIN,
   payload: user,
 });
+
+export const registerSuccess = () => ({
+  type: REGISTER,
+});
