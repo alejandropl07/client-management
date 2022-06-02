@@ -56,9 +56,6 @@ export default function Registration() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
           <Typography component="h1" variant="h5">
             Registro
           </Typography>
@@ -69,14 +66,14 @@ export default function Registration() {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
                   name="username"
                   required
                   fullWidth
                   id="username"
-                  label="Nombre de usuario"
+                  label="Nombre Usuario"
                   autoFocus
                 />
               </Grid>
@@ -110,13 +107,6 @@ export default function Registration() {
             >
               Registrarme
             </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/" variant="body2">
-                  Ya tiene una cuenta?
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
       </Container>
