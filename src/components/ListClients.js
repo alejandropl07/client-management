@@ -16,7 +16,7 @@ import { getClientsSuccess } from "../actions/clientsAction";
 import { useDispatch } from "react-redux";
 import Client from "./Client";
 
-function List() {
+function ListClients() {
   //const [{ clients },   dispatch] = useStateValue();
   const [results, setResults] = useState();
   const { token } = useSelector((state) => state.user.user);
@@ -83,4 +83,4 @@ function List() {
   );
 }
 
-export default List;
+export default ListClients;

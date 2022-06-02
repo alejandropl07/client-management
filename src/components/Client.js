@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
+import EditIcon from '@mui/icons-material/Edit';
 
 //import { deleteClientAction } from "../actions/clientsAction";
 
@@ -35,24 +36,16 @@ const Client = ({ client }) => {
   return (
     <tr>
       <td>{client.identificacion}</td>
+      <td>{client.nombre}{client.apellidos}</td>
       <td>
-        <Link
-          to={`/clients/editar/${client.id}`}
-          className="btn btn-primary mr-2"
-        >
-          Editar
-        </Link>
         <Stack direction="row" spacing={1}>
+          <IconButton aria-label="edit">
+            <EditIcon />
+          </IconButton>
           <IconButton aria-label="delete">
             <DeleteIcon />
           </IconButton>
         </Stack>
-        <button
-          className="btn btn-danger"
-          onClick={() => deleteClient(client.id)}
-        >
-          Eliminar
-        </button>
       </td>
     </tr>
   );

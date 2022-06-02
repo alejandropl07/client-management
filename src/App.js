@@ -5,7 +5,7 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import Registration from "./components/Registration";
 import Error from "./components/Error";
-import List from "./components/List";
+import List from "./components/ListClients";
 import FormClient from "./components/FormClient";
 
 import store from "./store";
