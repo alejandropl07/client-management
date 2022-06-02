@@ -3,7 +3,7 @@ import { CREATE_CLIENT, DELETE_CLIENT, GET_CLIENTS, UPDATE_CLIENT } from "../typ
 // Cada reducer tiene su propio state
 
 const initialState = {
-  clients: [],
+  clients: [{identificacion:  "234324", nombre:  "aaaa",  apellidos:  "wwwwww"}],
   error: null,
   loading: false,
   client:{}
@@ -15,7 +15,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         error: null,
-        clients:   action.payload,
+       // clients:  action.payload,
       };
 
       case CREATE_CLIENT:

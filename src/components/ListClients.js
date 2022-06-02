@@ -21,7 +21,7 @@ function ListClients() {
   const [results, setResults] = useState();
   const { token } = useSelector((state) => state.user.user);
   const { userid } = useSelector((state) => state.user.user);
-  const { clients } = useSelector((state) => state.clients.clients);
+  const { clients } = useSelector((state) => state.clients);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -53,6 +53,7 @@ function ListClients() {
 
   useEffect(() => {
     getClients();
+    console.log(clients);
   }, []);
   return (
     <TableContainer component={Paper}>
@@ -66,16 +67,7 @@ function ListClients() {
         </TableHead>
         <TableBody>
           {clients?.map((client) => (
-            <TableRow
-              key={client.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {client.identificacion}
-              </TableCell>
-              <TableCell align="right">{client.calories}</TableCell>
-              <TableCell align="right">{client.fat}</TableCell>
-            </TableRow>
+            <Client key={client.identificacion} client={client} />
           ))}
         </TableBody>
       </Table>

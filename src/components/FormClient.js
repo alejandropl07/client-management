@@ -84,7 +84,6 @@ function FormClient() {
           fAfiliacion,
           sexo,
           resenaPersonal,
-          imagen: "string",
           interesFK: interestSelect,
           usuarioId: userid,
         },
@@ -187,7 +186,6 @@ function FormClient() {
           required
           id="tel-cel"
           label="Télefono celular"
-          type="number"
           placeholder="Télefono celular"
           InputLabelProps={{
             shrink: true,
@@ -199,7 +197,6 @@ function FormClient() {
           required
           id="tel-otro"
           label="Télefono otro"
-          type="number"
           placeholder="Télefono otro"
           InputLabelProps={{
             shrink: true,

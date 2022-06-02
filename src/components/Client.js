@@ -5,7 +5,9 @@ import Swal from "sweetalert2";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
 
 //import { deleteClientAction } from "../actions/clientsAction";
 
@@ -28,26 +30,29 @@ const Client = ({ client }) => {
       if (result.isConfirmed) {
         Swal.fire("Eliminado!", "El cliente ha sido eliminado.", "success");
         console.log(id);
-       // dispatch(deleteClientAction(id));
+        // dispatch(deleteClientAction(id));
       }
     });
   };
 
   return (
-    <tr>
-      <td>{client.identificacion}</td>
-      <td>{client.nombre}{client.apellidos}</td>
-      <td>
-        <Stack direction="row" spacing={1}>
+    <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+      <TableCell component="th" scope="row">
+        {client.identificacion}
+      </TableCell>
+      <TableCell align="right">
+        {client.nombre}{" "}
+        {client.apellidos}
+      </TableCell>
+      <TableCell align="right">
           <IconButton aria-label="edit">
             <EditIcon />
           </IconButton>
           <IconButton aria-label="delete">
             <DeleteIcon />
           </IconButton>
-        </Stack>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   );
 };
 
