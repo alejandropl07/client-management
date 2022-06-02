@@ -1,4 +1,4 @@
-import { GET_CLIENTS } from "../types";
+import { CREATE_CLIENT, DELETE_CLIENT, GET_CLIENTS, UPDATE_CLIENT } from "../types";
 
 // Cada reducer tiene su propio state
 
@@ -6,6 +6,7 @@ const initialState = {
   clients: [],
   error: null,
   loading: false,
+  client:{}
 };
 
 export default function (state = initialState, action) {
@@ -16,6 +17,24 @@ export default function (state = initialState, action) {
         error: null,
         clients:   action.payload,
       };
+
+      case CREATE_CLIENT:
+      return {
+        ...state,
+        error: null,
+      };
+
+      case UPDATE_CLIENT:
+        return {
+          ...state,
+          error: null,
+        };
+
+        case DELETE_CLIENT:
+          return {
+            ...state,
+            error: null,
+          };
 
     default:
       return state;

@@ -28,24 +28,6 @@ function List() {
 
   const getClientsAction = (clients) => dispatch(getClientsSuccess(clients));
 
-  const getInterest = async () => {
-    await clientAxios
-      .get("api/Intereses/Listado", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        setResults(response.data);
-        /*  dispatch({
-          type: actionTypes.GET_CLIENTS,
-          item: results,
-        });*/
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   const getClients = async () => {
     console.log(userid);
     await clientAxios

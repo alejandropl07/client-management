@@ -6,9 +6,11 @@ import Home from "./components/Home";
 import Registration from "./components/Registration";
 import Error from "./components/Error";
 import List from "./components/List";
+import FormClient from "./components/FormClient";
 
 import store from "./store";
 import { Provider } from "react-redux";
+
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
           <Route exact path="/registration" element={<Registration />} />
           <Route exact path="/error" element={<Error />} />
           <Route exact path="/list" element={<List />} />
+          <Route exact path="/createclient" element={<FormClient />} />
         </Routes>
       {/* </StateProvider> */}
       </Provider>
