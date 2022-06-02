@@ -1,12 +1,18 @@
-import { CREATE_CLIENT, DELETE_CLIENT, GET_CLIENTS, UPDATE_CLIENT } from "../types";
+import {
+  CREATE_CLIENT,
+  DELETE_CLIENT,
+  GET_CLIENTS,
+  GET_CLIENT_EDIT,
+  UPDATE_CLIENT,
+} from "../types";
 
 // Cada reducer tiene su propio state
 
 const initialState = {
-  clients: [{identificacion:  "234324", nombre:  "aaaa",  apellidos:  "wwwwww"}],
+  clients: [{ identificacion: "234324", nombre: "aaaa", apellidos: "wwwwww" }],
   error: null,
   loading: false,
-  client:{}
+  client: {},
 };
 
 export default function (state = initialState, action) {
@@ -15,26 +21,36 @@ export default function (state = initialState, action) {
       return {
         ...state,
         error: null,
-       // clients:  action.payload,
+        // clients:  action.payload,
       };
 
-      case CREATE_CLIENT:
+    case CREATE_CLIENT:
       return {
         ...state,
         error: null,
       };
 
-      case UPDATE_CLIENT:
-        return {
-          ...state,
-          error: null,
-        };
+    case UPDATE_CLIENT:
+      return {
+        ...state,
+        error: null,
+      };
 
-        case DELETE_CLIENT:
-          return {
-            ...state,
-            error: null,
-          };
+    case DELETE_CLIENT:
+      return {
+        ...state,
+        error: null,
+        cients: state.clients.filter(
+          (client) => client.identificacion !== action.payload
+        ),
+      };
+
+    case GET_CLIENT_EDIT:
+      return {
+        ...state,
+        error: null,
+        client: action.payload,
+      };
 
     default:
       return state;

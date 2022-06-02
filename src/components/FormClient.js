@@ -5,13 +5,18 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
+import SaveIcon from "@mui/icons-material/Save";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Grid from "@mui/material/Grid";
+import IconButton from "@mui/material/IconButton";
 import Select from "@mui/material/Select";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import clientAxios from "../config/axios";
 import { getInterestSuccess } from "../actions/interestAction";
 import { createClientSuccess } from "../actions/clientsAction";
+import { displayList } from "../actions/displayAction";
 
 function FormClient() {
   const [nombre, setNombre] = useState("");
@@ -30,6 +35,12 @@ function FormClient() {
   const handleChangeInterest = (event) => {
     setInterestSelect(event.target.value);
     console.log(interestSelect);
+  };
+
+  const displayListAction = () => dispatch(displayList());
+
+  const showListClient = () => {
+    displayListAction();
   };
 
   const { token } = useSelector((state) => state.user.user);
@@ -56,6 +67,7 @@ function FormClient() {
         console.log(error);
       });
   };
+  
 
   const createClient = async (event) => {
     event.preventDefault();
@@ -94,6 +106,7 @@ function FormClient() {
       )
       .then((response) => {
         createClientAction();
+        displayListAction();
         console.log(response);
       })
       .catch((error) => {
@@ -116,14 +129,25 @@ function FormClient() {
       autoComplete="off"
     >
       <div>
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
         >
-          Guardar
-        </Button>
+          <IconButton aria-label="clients">
+            <AccountCircleIcon /> Mantenimiento de clientes
+          </IconButton>
+
+          <IconButton aria-label="save" type="submit">
+            <SaveIcon />
+            Guardar
+          </IconButton>
+          <IconButton aria-label="back" onClick={showListClient}>
+            <KeyboardBackspaceIcon />
+            Regresar
+          </IconButton>
+        </Box>
         <Box
           sx={{
             display: "flex",

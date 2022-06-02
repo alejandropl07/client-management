@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -8,15 +8,35 @@ import Stack from "@mui/material/Stack";
 import EditIcon from "@mui/icons-material/Edit";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
+import clientAxios from "../config/axios";
 
-//import { deleteClientAction } from "../actions/clientsAction";
+import { deleteClientSuccess, getClientEditSuccess } from "../actions/clientsAction";
+import { displayEdit } from "../actions/displayAction";
 
 const Client = ({ client }) => {
   const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user.user);
+  const displayEditAction = () => dispatch(displayEdit());
+  const getClientEditAction = (client) => dispatch(getClientEditSuccess(client));
+
+
+  const editClient = (id) => {
+    clientAxios
+          .get(`api/Cliente/Obtener/${id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          .then((response) => {
+            getClientEditAction(response.data);
+            displayEditAction();
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+  };
 
   const deleteClient = (id) => {
     // Confirmacion de Sweet Alert
-
     Swal.fire({
       title: "Está seguro?",
       text: "No podrá revertir esta acción!",
@@ -28,9 +48,19 @@ const Client = ({ client }) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
+        dispatch(deleteClientSuccess(id));
+        clientAxios
+          .delete(`api/Cliente/Eliminar/${id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
         Swal.fire("Eliminado!", "El cliente ha sido eliminado.", "success");
         console.log(id);
-        // dispatch(deleteClientAction(id));
       }
     });
   };
@@ -41,16 +71,21 @@ const Client = ({ client }) => {
         {client.identificacion}
       </TableCell>
       <TableCell align="right">
-        {client.nombre}{" "}
-        {client.apellidos}
+        {client.nombre} {client.apellidos}
       </TableCell>
       <TableCell align="right">
-          <IconButton aria-label="edit">
-            <EditIcon />
-          </IconButton>
-          <IconButton aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
+        <IconButton
+          aria-label="edit"
+          onClick={() => editClient(client.identificacion)}
+        >
+          <EditIcon />
+        </IconButton>
+        <IconButton
+          aria-label="delete"
+          onClick={() => deleteClient(client.identificacion)}
+        >
+          <DeleteIcon />
+        </IconButton>
       </TableCell>
     </TableRow>
   );

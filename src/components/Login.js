@@ -46,7 +46,7 @@ export default function Login() {
         });*/
         console.log(response.data);
         login(response.data);
-        navigate("/createclient");
+        navigate("/home");
       })
       .catch((error) => {
         console.log(error);

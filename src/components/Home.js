@@ -9,7 +9,7 @@ import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
 import Badge from "@mui/material/Badge";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -18,8 +18,11 @@ import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { mainListItems } from "./ListItems";
+import ListItems from "./ListItems";
 import ListClients from "./ListClients";
+import FormClient from "./FormClient";
+import UpdateClient from "./UpdateClient";
+import { useSelector } from "react-redux";
 
 const drawerWidth = 240;
 
@@ -75,6 +78,10 @@ function DashboardContent() {
     setOpen(!open);
   };
 
+  const { formClient } = useSelector((state) => state.display);
+  const { listClient } = useSelector((state) => state.display);
+  const { editClient } = useSelector((state) => state.display);
+
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: "flex" }}>
@@ -128,7 +135,7 @@ function DashboardContent() {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {mainListItems}
+            <ListItems />
             <Divider sx={{ my: 1 }} />
           </List>
         </Drawer>
@@ -150,7 +157,13 @@ function DashboardContent() {
               {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                  <ListClients />
+                  {listClient ? (
+                    <ListClients />
+                  ) : formClient ? (
+                    <FormClient />
+                  ) : (
+                    <UpdateClient />
+                  )}
                 </Paper>
               </Grid>
             </Grid>

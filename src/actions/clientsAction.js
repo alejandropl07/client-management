@@ -1,8 +1,19 @@
-import { GET_CLIENTS, CREATE_CLIENT,  UPDATE_CLIENT, DELETE_CLIENT } from "../types";
+import {
+  GET_CLIENTS,
+  CREATE_CLIENT,
+  UPDATE_CLIENT,
+  DELETE_CLIENT,
+  GET_CLIENT_EDIT,
+} from "../types";
 
 export const getClientsSuccess = (clients) => ({
   type: GET_CLIENTS,
   payload: clients,
+});
+
+export const getClientEditSuccess = (client) => ({
+  type: GET_CLIENT_EDIT,
+  payload: client,
 });
 
 export const createClientSuccess = () => ({
@@ -13,6 +24,7 @@ export const updateClientSuccess = () => ({
   type: UPDATE_CLIENT,
 });
 
-export const deleteClientSuccess = () => ({
+export const deleteClientSuccess = (id) => ({
   type: DELETE_CLIENT,
+  payload: id,
 });
