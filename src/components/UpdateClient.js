@@ -1,5 +1,6 @@
-import React, { Fragment, useEffect, useState,  useRef } from "react";
+import React, { Fragment, useEffect, useState, useRef } from "react";
 import Box from "@mui/material/Box";
+import { Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -16,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import clientAxios from "../config/axios";
 import { getInterestSuccess } from "../actions/interestAction";
 import { createClientSuccess } from "../actions/clientsAction";
+import { validateError, validateSuccess } from "../actions/validateAction";
 
 function UpdateClient() {
   const nombreRef = useRef("");
@@ -28,9 +30,8 @@ function UpdateClient() {
   const fAfiliacionRef = useRef("");
   const resenaPersonalRef = useRef("");
 
-  
   const [sexo, setSexo] = useState("");
-  const [interestSelect,  setInterestSelect] = useState("");
+  const [interestSelect, setInterestSelect] = useState("");
 
   const { userid } = useSelector((state) => state.user.user);
   const { interest } = useSelector((state) => state.interest);
@@ -44,9 +45,28 @@ function UpdateClient() {
   const updateClientAction = () => dispatch(updateClientAction());
 
   const { client } = useSelector((state) => state.clients);
+  const { error } = useSelector((state) => state.validate);
+
+  const successValid = () => dispatch(validateSuccess());
+  const errorValid = () => dispatch(validateError());
 
   const submitEditarCliente = async (event) => {
     event.preventDefault();
+    if (
+      nombreRef.current.value.trim() === "" ||
+      apellidosRef.current.value.trim() === "" ||
+      identificacionRef.current.value.trim() === "" ||
+      telefonoCelularRef.current.value.trim() === "" ||
+      otroTelefonoRef.current.value.trim() === "" ||
+      direccionRef.current.value.trim() === "" ||
+      fNacimientoRef.current.value.trim() === "" ||
+      fAfiliacionRef.current.value.trim() === "" ||
+      resenaPersonalRef.current.value.trim() === ""
+    ) {
+      errorValid();
+      return;
+    }
+    successValid();
     await clientAxios
       .post(
         "/api/Cliente/Actualizar",
@@ -54,7 +74,7 @@ function UpdateClient() {
           nombre: nombreRef,
           apellidos: apellidosRef,
           identificacion: identificacionRef,
-          telefonoCelular: telefonoCelularRef,
+          Celular: telefonoCelularRef,
           otroTelefono: otroTelefonoRef,
           direccion: direccionRef,
           fNacimiento: fNacimientoRef,
@@ -154,8 +174,8 @@ function UpdateClient() {
               labelId="genero-label"
               id="genero"
               label="Género *"
-              onChange={()  =>  setInterestSelect()}
-              >
+              onChange={() => setInterestSelect()}
+            >
               <MenuItem value={client?.sexo}>
                 <em>None</em>
               </MenuItem>
@@ -222,7 +242,7 @@ function UpdateClient() {
               labelId="interes-label"
               id="interes"
               label="Interes"
-              onChange={()  =>  setInterestSelect()}
+              onChange={() => setInterestSelect()}
             >
               <MenuItem value={client?.interesesId}>
                 <em>None</em>
@@ -258,6 +278,21 @@ function UpdateClient() {
           />
         </Box>
       </div>
+      {error ? (
+        <Typography
+          component="h1"
+          variant="h5"
+          color="inherit"
+          noWrap
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          Todos los campos son obligatorios
+        </Typography>
+      ) : null}
     </Box>
   );
 }

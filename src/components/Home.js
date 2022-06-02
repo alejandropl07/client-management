@@ -23,6 +23,7 @@ import ListClients from "./ListClients";
 import FormClient from "./FormClient";
 import UpdateClient from "./UpdateClient";
 import { useSelector } from "react-redux";
+import Welcome from "./Welcome";
 
 const drawerWidth = 240;
 
@@ -81,6 +82,7 @@ function DashboardContent() {
   const { formClient } = useSelector((state) => state.display);
   const { listClient } = useSelector((state) => state.display);
   const { editClient } = useSelector((state) => state.display);
+  const { username } = useSelector((state) => state.user.user);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -112,6 +114,16 @@ function DashboardContent() {
               sx={{ flexGrow: 1 }}
             >
               Compañía prueba
+            </Typography>
+
+            <Typography
+              component="h1"
+              variant="h6"
+              color="inherit"
+              noWrap
+              sx={{ display: "flex", alignItems: "right" }}
+            >
+              {username}
             </Typography>
             <IconButton color="inherit">
               <Badge color="secondary">
@@ -161,8 +173,10 @@ function DashboardContent() {
                     <ListClients />
                   ) : formClient ? (
                     <FormClient />
-                  ) : (
+                  ) : editClient ? (
                     <UpdateClient />
+                  ) : (
+                    <Welcome />
                   )}
                 </Paper>
               </Grid>

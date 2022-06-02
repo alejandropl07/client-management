@@ -26,7 +26,6 @@ import { displayForm } from "../actions/displayAction";
 
 function ListClients() {
   //const [{ clients },   dispatch] = useStateValue();
-  const [results, setResults] = useState();
   const { token } = useSelector((state) => state.user.user);
   const { userid } = useSelector((state) => state.user.user);
   const { clients } = useSelector((state) => state.clients);
@@ -50,6 +49,28 @@ function ListClients() {
       .post(
         "api/Cliente/Listado",
         { usuarioid: userid },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((response) => {
+        /*  dispatch({
+          type: actionTypes.GET_CLIENTS,
+          item: results,
+        });*/
+        console.log(response);
+        getClientsAction(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getClientsFilter = async () => {
+    await clientAxios
+      .post(
+        "api/Cliente/Listado",
+        { usuarioid: userid, identificacion, nombre },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -125,7 +146,7 @@ function ListClients() {
             onChange={(e) => setIdentificacion(e.target.value)}
           />
 
-          <IconButton aria-label="search">
+          <IconButton aria-label="search" onClick={getClientsFilter}>
             <SearchIcon />
           </IconButton>
         </Box>

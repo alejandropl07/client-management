@@ -13,3 +13,7 @@ export  const   GET_INTEREST  =   'GET_INTEREST';
 export  const   LIST_CLIENT  =   'LIST_CLIENT';
 export  const   FORM_CLIENT  =   'FORM_CLIENT';
 export  const   EDIT_CLIENT  =   'EDIT_CLIENT';
+export  const   WELCOME  =   'WELCOME';
+
+export  const   VALIDATE_FORM_SUCCESS  =   'VALIDATE_FORM_SUCCESS';
+export  const   VALIDATE_FORM_ERROR  =   'VALIDATE_FORM_ERROR';

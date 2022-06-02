@@ -1,11 +1,12 @@
-import { LIST_CLIENT, FORM_CLIENT, EDIT_CLIENT } from "../types";
+import { LIST_CLIENT, FORM_CLIENT, EDIT_CLIENT, WELCOME } from "../types";
 
 // Cada reducer tiene su propio state
 
 const initialState = {
   formClient: false,
-  listClient: true,
+  listClient: false,
   editClient: false,
+  welcome: true
 };
 
 export default function (state = initialState, action) {
@@ -16,6 +17,7 @@ export default function (state = initialState, action) {
         formClient: false,
         listClient: true,
         editClient: false,
+        welcome: false,
       };
 
     case FORM_CLIENT:
@@ -24,6 +26,7 @@ export default function (state = initialState, action) {
         formClient: true,
         listClient: false,
         editClient: false,
+        welcome: false,
       };
 
     case EDIT_CLIENT:
@@ -32,6 +35,16 @@ export default function (state = initialState, action) {
         formClient: false,
         listClient: false,
         editClient: true,
+        welcome: false,
+      };
+
+      case WELCOME:
+      return {
+        ...state,
+        formClient: false,
+        listClient: false,
+        editClient: false,
+        welcome: true,
       };
 
     default:

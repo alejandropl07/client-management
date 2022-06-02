@@ -12,19 +12,25 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import HomeIcon from "@mui/icons-material/Home";
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 import { useDispatch } from "react-redux";
-import { displayList } from "../actions/displayAction";
+import { displayList, displayWelcome } from "../actions/displayAction";
 
 function ListItems() {
   const dispatch = useDispatch();
 
+  const displayWelcomeAction = () => dispatch(displayWelcome());
   const displayListAction = () => dispatch(displayList());
 
   const showListClient = () => {
     displayListAction();
   };
+
+  const showWelcome = () => {
+    displayWelcomeAction();
+  };
+
   return (
     <React.Fragment>
-      <ListItemButton>
+      <ListItemButton onClick={showWelcome}>
         <ListItemIcon>
           <HomeIcon />
         </ListItemIcon>

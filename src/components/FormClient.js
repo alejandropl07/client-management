@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
+import { Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -17,6 +18,7 @@ import clientAxios from "../config/axios";
 import { getInterestSuccess } from "../actions/interestAction";
 import { createClientSuccess } from "../actions/clientsAction";
 import { displayList } from "../actions/displayAction";
+import { validateSuccess, validateError } from "../actions/validateAction";
 
 function FormClient() {
   const [nombre, setNombre] = useState("");
@@ -34,7 +36,6 @@ function FormClient() {
 
   const handleChangeInterest = (event) => {
     setInterestSelect(event.target.value);
-    console.log(interestSelect);
   };
 
   const displayListAction = () => dispatch(displayList());
@@ -46,6 +47,7 @@ function FormClient() {
   const { token } = useSelector((state) => state.user.user);
   const { userid } = useSelector((state) => state.user.user);
   const { interest } = useSelector((state) => state.interest);
+  const { error } = useSelector((state) => state.validate);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -53,6 +55,9 @@ function FormClient() {
   const getInterestAction = (interest) =>
     dispatch(getInterestSuccess(interest));
   const createClientAction = () => dispatch(createClientAction());
+
+  const successValid = () => dispatch(validateSuccess());
+  const errorValid = () => dispatch(validateError());
 
   const getInterest = async () => {
     await clientAxios
@@ -67,22 +72,26 @@ function FormClient() {
         console.log(error);
       });
   };
-  
 
   const createClient = async (event) => {
     event.preventDefault();
-    console.log(nombre);
-    console.log(apellidos);
-    console.log(identificacion);
-    console.log(telefonoCelular);
-    console.log(otroTelefono);
-    console.log(direccion);
-    console.log(fNacimiento);
-    console.log(fAfiliacion);
-    console.log(sexo);
-    console.log(resenaPersonal);
-    console.log(interestSelect);
-    console.log(userid);
+    if (
+      nombre.trim() === "" ||
+      apellidos.trim() === "" ||
+      identificacion.trim() === "" ||
+      telefonoCelular.trim() === "" ||
+      otroTelefono.trim() === "" ||
+      direccion.trim() === "" ||
+      fNacimiento.trim() === "" ||
+      fAfiliacion.trim() === "" ||
+      sexo.trim() === "" ||
+      resenaPersonal.trim() === "" ||
+      interestSelect.trim() === ""
+    ) {
+      errorValid();
+      return;
+    }
+    successValid();
     await clientAxios
       .post(
         "/api/Cliente/Crear",
@@ -90,7 +99,7 @@ function FormClient() {
           nombre,
           apellidos,
           identificacion,
-          telefonoCelular,
+          Celular: telefonoCelular,
           otroTelefono,
           direccion,
           fNacimiento,
@@ -98,10 +107,14 @@ function FormClient() {
           sexo,
           resenaPersonal,
           interesFK: interestSelect,
+          imagen:
+            "data:image/jpeg;base64,/9j/4QEZRXhpZgAATU0AKgAAAAgABQEAAAMAAAABAtAAAAEBAAMAAAABBkAAAAExAAIAAAAmAAAASodpAAQAAAABAAAAcAESAAMAAAABAAAAAAAAAABBbmRyb2lkIFJQMUEuMjAwNzIwLjAxMi5BMjE3TVVCVTdDVUkxAAAEkAMAAgAAABQAAACmkpEAAgAAAAQ3NDQAkBEAAgAAAAcAAAC6kggABAAAAAEAAAAAAAAAADIwMjI6MDU6MzEgMTc6MDE6NDQALTA0OjAwAAADAQAAAwAAAAEC0AAAATEAAgAAACYAAADrAQEAAwAAAAEGQAAAAAAAAEFuZHJvaWQgUlAxQS4yMDA3MjAuMDEyLkEyMTdNVUJVN0NVSTEA/+AAEEpGSUYAAQEAAAEAAQAA/+ICKElDQ19QUk9GSUxFAAEBAAACGAAAAAACEAAAbW50clJHQiBYWVogAAAAAAAAAAAAAAAAYWNzcAAAAAAAAAAAAAAAAAAA",
           usuarioId: userid,
         },
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       )
       .then((response) => {
@@ -302,6 +315,15 @@ function FormClient() {
           />
         </Box>
       </div>
+      {error  ? <Typography
+        component="h1"
+        variant="h5"
+        color="inherit"
+        noWrap
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      >
+        Todos los campos son obligatorios
+      </Typography> : null}
     </Box>
   );
 }
