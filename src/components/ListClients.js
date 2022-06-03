@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import clientAxios from "../config/axios";
 import { actionTypes } from "../reducer";
@@ -32,6 +32,17 @@ function ListClients() {
 
   const [nombre, setNombre] = useState("");
   const [identificacion, setIdentificacion] = useState("");
+
+  const nombreRef = useRef("");
+  const identificacionRef = useRef("");
+
+  const onChangeNombre = (value) => {
+    setNombre(value);
+  };
+
+  const onChangeIdentificacion = (value) => {
+    setIdentificacion(value);
+  };
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -136,8 +147,8 @@ function ListClients() {
             id="nombre"
             label="Nombre"
             placeholder="Nombre"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
+            inputRef={nombreRef}
+            onChange={() => onChangeNombre(nombreRef.current.value)}
           />
 
           <TextField
@@ -145,8 +156,10 @@ function ListClients() {
             id="identificacion"
             label="Identificación"
             placeholder="Identificación"
-            value={identificacion}
-            onChange={(e) => setIdentificacion(e.target.value)}
+            inputRef={identificacionRef}
+            onChange={() =>
+              onChangeIdentificacion(identificacionRef.current.value)
+            }
           />
 
           <IconButton
@@ -174,9 +187,16 @@ function ListClients() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {clients?.map((client) => (
-              <Client key={client.id} client={client} getClients={getClients} />
-            ))}
+            {clients?.map((client) => {
+              if (client.nombre.toLowerCase().includes(nombre.toLowerCase())  &&  client.identificacion.toLowerCase().includes(identificacion.toLowerCase()))
+                return (
+                  <Client
+                    key={client.id}
+                    client={client}
+                    getClients={getClients}
+                  />
+                );
+            })}
           </TableBody>
         </Table>
       </TableContainer>

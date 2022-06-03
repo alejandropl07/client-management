@@ -22,6 +22,7 @@ import ListClients from "./ListClients";
 import FormClient from "./FormClient";
 import UpdateClient from "./UpdateClient";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Welcome from "./Welcome";
 import Error from "./Error";
 import { logoutSuccess } from "../actions/userAction";
@@ -88,8 +89,14 @@ function DashboardContent() {
   const { expiration } = useSelector((state) => state.user.user);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const logout = () => dispatch(logoutSuccess());
+
+  const logoutAction = () => {
+    logout();
+    navigate("/");
+  };
 
   useEffect(() => {
     const date = new Date();
@@ -139,7 +146,7 @@ function DashboardContent() {
             >
               {username}
             </Typography>
-            <IconButton color="inherit" onClick={logout}>
+            <IconButton color="inherit" onClick={logoutAction}>
               <Badge color="secondary">
                 <LogoutIcon />
               </Badge>
