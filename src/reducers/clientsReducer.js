@@ -9,7 +9,7 @@ import {
 // Cada reducer tiene su propio state
 
 const initialState = {
-  clients: [{ identificacion: "234324", nombre: "aaaa", apellidos: "wwwwww" }],
+  clients: [],
   error: null,
   loading: false,
   client: {},
@@ -41,7 +41,7 @@ export default function (state = initialState, action) {
         ...state,
         error: null,
         cients: state.clients.filter(
-          (client) => client.identificacion !== action.payload
+          (client) => client.id !== action.payload
         ),
       };
 

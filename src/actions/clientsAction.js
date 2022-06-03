@@ -24,7 +24,7 @@ export const updateClientSuccess = () => ({
   type: UPDATE_CLIENT,
 });
 
-export const deleteClientSuccess = (IdCliente) => ({
+export const deleteClientSuccess = (id) => ({
   type: DELETE_CLIENT,
-  payload: IdCliente,
+  payload: id,
 });

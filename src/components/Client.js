@@ -14,16 +14,17 @@ import {
 } from "../actions/clientsAction";
 import { displayEdit } from "../actions/displayAction";
 
-const Client = ({ client }) => {
+const Client = ({ client, getClients }) => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.user.user);
+  const { userid } = useSelector((state) => state.user.user);
   const displayEditAction = () => dispatch(displayEdit());
   const getClientEditAction = (client) =>
     dispatch(getClientEditSuccess(client));
 
-  const editClient = (IdCliente) => {
+  const editClient = (id) => {
     clientAxios
-      .get(`api/Cliente/Obtener/${IdCliente}`, {
+      .get(`api/Cliente/Obtener/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -36,7 +37,8 @@ const Client = ({ client }) => {
       });
   };
 
-  const deleteClient = (IdCliente) => {
+  const deleteClient = (event,  id) => {
+    event.preventDefault();
     // Confirmacion de Sweet Alert
     Swal.fire({
       title: "Está seguro?",
@@ -49,15 +51,14 @@ const Client = ({ client }) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(deleteClientSuccess(IdCliente));
         clientAxios
-          .delete(`api/Cliente/Eliminar/${IdCliente}`, {
+          .delete(`api/Cliente/Eliminar/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then((response) => {
             Swal.fire("Eliminado!", "El cliente ha sido eliminado.", "success");
-            console.log(IdCliente);
             console.log(response);
+            getClients();
           })
           .catch((error) => {
             console.log(error);
@@ -75,15 +76,12 @@ const Client = ({ client }) => {
         {client.nombre} {client.apellidos}
       </TableCell>
       <TableCell align="right">
-        <IconButton
-          aria-label="edit"
-          onClick={() => editClient(client.identificacion)}
-        >
+        <IconButton aria-label="edit" onClick={() => editClient(client.id)}>
           <EditIcon />
         </IconButton>
         <IconButton
           aria-label="delete"
-          onClick={() => deleteClient(client.identificacion)}
+          onClick={(event) => deleteClient(event,  client.id)}
         >
           <DeleteIcon />
         </IconButton>

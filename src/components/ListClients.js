@@ -48,11 +48,11 @@ function ListClients() {
     displayWelcomeAction();
   };
 
-  const getClients = async () => {
+ const getClients = async () => {
     await clientAxios
       .post(
         "api/Cliente/Listado",
-        { usuarioid: userid },
+        { usuarioid: userid, identificacion, nombre },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -168,7 +168,7 @@ function ListClients() {
           </TableHead>
           <TableBody>
             {clients?.map((client) => (
-              <Client key={client.identificacion} client={client} />
+              <Client key={client.id} client={client} getClients={getClients}/>
             ))}
           </TableBody>
         </Table>

@@ -114,7 +114,6 @@ function FormClient() {
         }
       )
       .then((response) => {
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         createClientAction();
         displayListAction();
         console.log(response);

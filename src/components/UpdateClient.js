@@ -4,7 +4,6 @@ import { Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import SaveIcon from "@mui/icons-material/Save";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
@@ -19,27 +18,21 @@ import { getInterestSuccess } from "../actions/interestAction";
 import { createClientSuccess } from "../actions/clientsAction";
 import { validateError, validateSuccess } from "../actions/validateAction";
 import Swal from "sweetalert2";
+import { displayList } from "../actions/displayAction";
 
 function UpdateClient() {
-  const nombreRef = useRef("");
-  const apellidosRef = useRef("");
-  const identificacionRef = useRef("");
-  const telefonoCelularRef = useRef("");
-  const otroTelefonoRef = useRef("");
-  const direccionRef = useRef("");
-  const fNacimientoRef = useRef("");
-  const fAfiliacionRef = useRef("");
-  const resenaPersonalRef = useRef("");
-
-  const [sexo, setSexo] = useState("");
-  const [interestSelect, setInterestSelect] = useState("");
-
   const { userid } = useSelector((state) => state.user.user);
   const { interest } = useSelector((state) => state.interest);
   const { token } = useSelector((state) => state.user.user);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const displayListAction = () => dispatch(displayList());
+
+  const showListClient = () => {
+    displayListAction();
+  };
 
   const getInterestAction = (interest) =>
     dispatch(getInterestSuccess(interest));
@@ -48,41 +41,70 @@ function UpdateClient() {
   const { client } = useSelector((state) => state.clients);
   const { error } = useSelector((state) => state.validate);
 
+  const [nombre,  setNombre ]= useState(client.nombre);
+  const [apellidos, setApellidos] = useState(client.apellidos);
+  const [identificacion,  setIdentificacion] = useState(client.identificacion);
+  const [celular, setCelular] = useState(client.telefonoCelular);
+  const [otroTelefono, setOtroCel] = useState(client.otroTelefono);
+  const [direccion, setDireccion] = useState(client.direccion);
+  const [resennaPersonal,  setResena] = useState(client.resenaPersonal);
+
+  const [fNacimiento, setFechaNac] = useState(client.fNacimiento);
+  const [fAfiliacion,  setFechaAfil] = useState(client.fAfiliacion);
+
+  const [sexo, setSexo] = useState(client.sexo);
+  const [interestSelect, setInterestSelect] = useState(client.interesesId);
+
   const successValid = () => dispatch(validateSuccess());
   const errorValid = () => dispatch(validateError());
 
+  const getInterest = async () => {
+    await clientAxios
+      .get("api/Intereses/Listado", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        getInterestAction(response.data);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const submitEditarCliente = async (event) => {
     event.preventDefault();
-    if (
+  /*  if (
       nombreRef.current.value.trim() === "" ||
       apellidosRef.current.value.trim() === "" ||
       identificacionRef.current.value.trim() === "" ||
       telefonoCelularRef.current.value.trim() === "" ||
       otroTelefonoRef.current.value.trim() === "" ||
       direccionRef.current.value.trim() === "" ||
-      fNacimientoRef.current.value.trim() === "" ||
-      fAfiliacionRef.current.value.trim() === "" ||
       resenaPersonalRef.current.value.trim() === ""
     ) {
       errorValid();
       return;
-    }
+    }*/
     successValid();
     await clientAxios
       .post(
         "/api/Cliente/Actualizar",
         {
-          nombre: nombreRef,
-          apellidos: apellidosRef,
-          identificacion: identificacionRef,
-          celular: telefonoCelularRef,
-          otroTelefono: otroTelefonoRef,
-          direccion: direccionRef,
-          fNacimiento: fNacimientoRef,
-          fAfiliacion: fAfiliacionRef,
+          id: client.id,
+          nombre,
+          apellidos,
+          identificacion,
+          celular,
+          otroTelefono,
+          direccion,
+          fNacimiento,
+          fAfiliacion,
           sexo,
-          resennaPersonal: resenaPersonalRef,
+          resennaPersonal,
           interesFK: interestSelect,
+          imagen:
+            "data:image/jpeg;base64,/9j/4QEZRXhpZgAATU0AKgAAAAgABQEAAAMAAAABAtAAAAEBAAMAAAABBkAAAAExAAIAAAAmAAAASodpAAQAAAABAAAAcAESAAMAAAABAAAAAAAAAABBbmRyb2lkIFJQMUEuMjAwNzIwLjAxMi5BMjE3TVVCVTdDVUkxAAAEkAMAAgAAABQAAACmkpEAAgAAAAQ3NDQAkBEAAgAAAAcAAAC6kggABAAAAAEAAAAAAAAAADIwMjI6MDU6MzEgMTc6MDE6NDQALTA0OjAwAAADAQAAAwAAAAEC0AAAATEAAgAAACYAAADrAQEAAwAAAAEGQAAAAAAAAEFuZHJvaWQgUlAxQS4yMDA3MjAuMDEyLkEyMTdNVUJVN0NVSTEA/+AAEEpGSUYAAQEAAAEAAQAA/+ICKElDQ19QUk9GSUxFAAEBAAACGAAAAAACEAAAbW50clJHQiBYWVogAAAAAAAAAAAAAAAAYWNzcAAAAAAAAAAAAAAAAAAA",
           usuarioId: userid,
         },
         {
@@ -90,7 +112,7 @@ function UpdateClient() {
         }
       )
       .then((response) => {
-        console.log(response);
+        showListClient()
       })
       .catch((error) => {
         Swal.fire({
@@ -100,10 +122,14 @@ function UpdateClient() {
           showCancelButton: false,
           confirmButtonColor: "#3085d6",
           confirmButtonText: "Aceptar!",
-        })
+        });
         console.log(error);
       });
   };
+
+  useEffect(() => {
+    getInterest();
+  }, []);
 
   return (
     <Box
@@ -130,7 +156,7 @@ function UpdateClient() {
             <SaveIcon />
             Guardar
           </IconButton>
-          <IconButton aria-label="back">
+          <IconButton aria-label="back" onClick={showListClient}>
             <KeyboardBackspaceIcon />
             Regresar
           </IconButton>
@@ -147,8 +173,8 @@ function UpdateClient() {
             id="identificacion"
             label="Identificación"
             placeholder="Identificación"
-            ref={identificacionRef}
             defaultValue={client?.identificacion}
+            onChange={(e) => setIdentificacion(e.target.value)}
           />
 
           <TextField
@@ -157,8 +183,8 @@ function UpdateClient() {
             id="nombre"
             label="Nombre"
             placeholder="Nombre"
-            ref={nombreRef}
             defaultValue={client?.nombre}
+            onChange={(e) => setNombre(e.target.value)}
           />
           <TextField
             sx={{ minWidth: "20%" }}
@@ -166,8 +192,8 @@ function UpdateClient() {
             id="apellidos"
             label="Apellidos"
             placeholder="Apellidos"
-            ref={apellidosRef}
             defaultValue={client?.apellidos}
+            onChange={(e) => setApellidos(e.target.value)}
           />
         </Box>
 
@@ -183,11 +209,10 @@ function UpdateClient() {
               labelId="genero-label"
               id="genero"
               label="Género *"
+              defaultValue={client?.sexo}
               onChange={(e) => setSexo(e.target.value)}
             >
-              <MenuItem value={client?.sexo}>
-                <em>None</em>
-              </MenuItem>
+              <MenuItem value={client?.sexo}><em></em></MenuItem>
               <MenuItem value="M">Masculino</MenuItem>
               <MenuItem value="F">Femenino</MenuItem>
             </Select>
@@ -199,8 +224,8 @@ function UpdateClient() {
             label="Fecha de nacimiento"
             InputLabelProps={{ shrink: true, required: true }}
             type="date"
-            ref={fNacimientoRef}
-            value={client?.fNacimiento}
+            defaultValue={client?.fNacimiento}
+            onChange={(e) => setFechaNac(e.target.value)}
           />
 
           <TextField
@@ -209,8 +234,8 @@ function UpdateClient() {
             label="Fecha de afiliación"
             InputLabelProps={{ shrink: true, required: true }}
             type="date"
-            ref={fAfiliacionRef}
-            value={client?.fAfiliacion}
+            defaultValue={client?.fAfiliacion}
+            onChange={(e) => setFechaAfil(e.target.value)}
           />
         </Box>
 
@@ -230,7 +255,7 @@ function UpdateClient() {
             InputLabelProps={{
               shrink: true,
             }}
-            ref={telefonoCelularRef}
+            onChange={(e) => setCelular(e.target.value)}
           />
           <TextField
             sx={{ minWidth: "20%" }}
@@ -241,8 +266,8 @@ function UpdateClient() {
             InputLabelProps={{
               shrink: true,
             }}
-            ref={otroTelefonoRef}
             defaultValue={client?.otroTelefono}
+            onChange={(e) => setOtroCel(e.target.value)}
           />
 
           <FormControl required sx={{ m: 1, minWidth: "20%" }}>
@@ -251,10 +276,11 @@ function UpdateClient() {
               labelId="interes-label"
               id="interes"
               label="Interes"
+              defaultValue={client?.interesesId}
               onChange={(e) => setInterestSelect(e.target.value)}
             >
-              <MenuItem value={client?.interesesId}>
-                <em>None</em>
+              <MenuItem value={client?.interesesId}> 
+                <em></em>
               </MenuItem>
               {interest?.map((int) => (
                 <MenuItem key={int.id} value={int.id}>
@@ -271,8 +297,8 @@ function UpdateClient() {
             id="direccion"
             label="Dirección"
             placeholder="Dirección"
-            ref={direccionRef}
             defaultValue={client?.direccion}
+            onChange={(e) => setDireccion(e.target.value)}
           />
         </Box>
         <Box sx={{ marginLeft: "295px" }}>
@@ -282,8 +308,8 @@ function UpdateClient() {
             id="resena"
             label="Reseña"
             placeholder="Reseña"
-            ref={resenaPersonalRef}
             defaultValue={client?.resenaPersonal}
+            onChange={(e) => setResena(e.target.value)}
           />
         </Box>
       </div>
