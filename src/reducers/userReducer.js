@@ -1,11 +1,10 @@
-import { LOGIN, REGISTER } from "../types";
+import { LOGIN, LOGOUT, REGISTER } from "../types";
 
 // Cada reducer tiene su propio state
 
 const initialState = {
   user: {},
   error: null,
-  loading: false,
 };
 
 export default function (state = initialState, action) {
@@ -21,6 +20,13 @@ export default function (state = initialState, action) {
       return {
         ...state,
         error: null,
+      };
+
+      case LOGOUT:
+      return {
+        ...state,
+        error: null,
+        user: {}
       };
 
     default:

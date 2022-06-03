@@ -1,15 +1,13 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import SaveIcon from "@mui/icons-material/Save";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 import Select from "@mui/material/Select";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +17,7 @@ import { getInterestSuccess } from "../actions/interestAction";
 import { createClientSuccess } from "../actions/clientsAction";
 import { displayList } from "../actions/displayAction";
 import { validateSuccess, validateError } from "../actions/validateAction";
+import Swal from "sweetalert2";
 
 function FormClient() {
   const [nombre, setNombre] = useState("");
@@ -49,7 +48,6 @@ function FormClient() {
   const { interest } = useSelector((state) => state.interest);
   const { error } = useSelector((state) => state.validate);
 
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const getInterestAction = (interest) =>
@@ -123,6 +121,14 @@ function FormClient() {
         console.log(response);
       })
       .catch((error) => {
+        Swal.fire({
+          title: "Error",
+          text: "Ha ocurrido un error!",
+          icon: "error",
+          showCancelButton: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar!",
+        })
         console.log(error);
       });
   };

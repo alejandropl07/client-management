@@ -15,19 +15,25 @@ import { actionTypes } from "../reducer";
 import { StateContext, useStateValue } from "../StateProvider";
 
 import { useNavigate } from "react-router-dom";
-import { loginAction, loginSuccess } from "../actions/userAction";
+import { loginSuccess } from "../actions/userAction";
 import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
 
 const theme = createTheme();
 
 export default function Login() {
-  const [results, setResults] = useState();
+  // const [results, setResults] = useState();
   // const { data } = useContext(StateContext);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const login = (user) => dispatch(loginSuccess(user));
+
+  // const { error } = useSelector((state) => state.validate);
+
+  // const successValid = () => dispatch(validateSuccess());
+  // const errorValid = () => dispatch(validateError());
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -49,6 +55,14 @@ export default function Login() {
         navigate("/home");
       })
       .catch((error) => {
+        Swal.fire({
+          title: "Error",
+          text: "Ha ocurrido un error!",
+          icon: "error",
+          showCancelButton: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar!",
+        })
         console.log(error);
       });
   };

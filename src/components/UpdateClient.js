@@ -18,6 +18,7 @@ import clientAxios from "../config/axios";
 import { getInterestSuccess } from "../actions/interestAction";
 import { createClientSuccess } from "../actions/clientsAction";
 import { validateError, validateSuccess } from "../actions/validateAction";
+import Swal from "sweetalert2";
 
 function UpdateClient() {
   const nombreRef = useRef("");
@@ -92,6 +93,14 @@ function UpdateClient() {
         console.log(response);
       })
       .catch((error) => {
+        Swal.fire({
+          title: "Error",
+          text: "Ha ocurrido un error!",
+          icon: "error",
+          showCancelButton: false,
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Aceptar!",
+        })
         console.log(error);
       });
   };
@@ -174,7 +183,7 @@ function UpdateClient() {
               labelId="genero-label"
               id="genero"
               label="Género *"
-              onChange={() => setInterestSelect()}
+              onChange={(e) => setSexo(e.target.value)}
             >
               <MenuItem value={client?.sexo}>
                 <em>None</em>
@@ -242,7 +251,7 @@ function UpdateClient() {
               labelId="interes-label"
               id="interes"
               label="Interes"
-              onChange={() => setInterestSelect()}
+              onChange={(e) => setInterestSelect(e.target.value)}
             >
               <MenuItem value={client?.interesesId}>
                 <em>None</em>

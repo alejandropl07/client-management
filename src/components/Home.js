@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -17,13 +17,13 @@ import Paper from "@mui/material/Paper";
 import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import ListItems from "./ListItems";
 import ListClients from "./ListClients";
 import FormClient from "./FormClient";
 import UpdateClient from "./UpdateClient";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Welcome from "./Welcome";
+import { logoutSuccess } from "../actions/userAction";
 
 const drawerWidth = 240;
 
@@ -83,6 +83,18 @@ function DashboardContent() {
   const { listClient } = useSelector((state) => state.display);
   const { editClient } = useSelector((state) => state.display);
   const { username } = useSelector((state) => state.user.user);
+  const { expiration } = useSelector((state) => state.user.user);
+
+  const dispatch = useDispatch();
+
+  const logout = () => dispatch(logoutSuccess());
+
+  useEffect(() => {
+    const date = new Date();
+    const expirationDate = new Date(expiration.toString());
+    const count = expirationDate.getTime() - date.getTime();
+    setTimeout(logout, count);
+  }, []);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -125,7 +137,7 @@ function DashboardContent() {
             >
               {username}
             </Typography>
-            <IconButton color="inherit">
+            <IconButton color="inherit" onClick={logout}>
               <Badge color="secondary">
                 <LogoutIcon />
               </Badge>

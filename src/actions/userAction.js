@@ -1,4 +1,4 @@
-import { LOGIN, REGISTER } from "../types";
+import { LOGIN, LOGOUT, REGISTER } from "../types";
 
 import clientAxios from "../config/axios";
 import Swal from "sweetalert2";
@@ -29,4 +29,8 @@ export const loginSuccess = (user) => ({
 
 export const registerSuccess = () => ({
   type: REGISTER,
+});
+
+export const logoutSuccess = () => ({
+  type: LOGOUT,
 });
