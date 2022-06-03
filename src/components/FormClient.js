@@ -33,10 +33,6 @@ function FormClient() {
 
   const [interestSelect, setInterestSelect] = useState("");
 
-  const handleChangeInterest = (event) => {
-    setInterestSelect(event.target.value);
-  };
-
   const displayListAction = () => dispatch(displayList());
 
   const showListClient = () => {
@@ -52,7 +48,9 @@ function FormClient() {
 
   const getInterestAction = (interest) =>
     dispatch(getInterestSuccess(interest));
-  const createClientAction = () => dispatch(createClientAction());
+
+  const createClientAction = () => dispatch(createClientSuccess());
+  
 
   const successValid = () => dispatch(validateSuccess());
   const errorValid = () => dispatch(validateError());
@@ -97,13 +95,13 @@ function FormClient() {
           nombre,
           apellidos,
           identificacion,
-          Celular: telefonoCelular,
+          celular: telefonoCelular,
           otroTelefono,
           direccion,
           fNacimiento,
           fAfiliacion,
           sexo,
-          resenaPersonal,
+          resennaPersonal: resenaPersonal,
           interesFK: interestSelect,
           imagen:
             "data:image/jpeg;base64,/9j/4QEZRXhpZgAATU0AKgAAAAgABQEAAAMAAAABAtAAAAEBAAMAAAABBkAAAAExAAIAAAAmAAAASodpAAQAAAABAAAAcAESAAMAAAABAAAAAAAAAABBbmRyb2lkIFJQMUEuMjAwNzIwLjAxMi5BMjE3TVVCVTdDVUkxAAAEkAMAAgAAABQAAACmkpEAAgAAAAQ3NDQAkBEAAgAAAAcAAAC6kggABAAAAAEAAAAAAAAAADIwMjI6MDU6MzEgMTc6MDE6NDQALTA0OjAwAAADAQAAAwAAAAEC0AAAATEAAgAAACYAAADrAQEAAwAAAAEGQAAAAAAAAEFuZHJvaWQgUlAxQS4yMDA3MjAuMDEyLkEyMTdNVUJVN0NVSTEA/+AAEEpGSUYAAQEAAAEAAQAA/+ICKElDQ19QUk9GSUxFAAEBAAACGAAAAAACEAAAbW50clJHQiBYWVogAAAAAAAAAAAAAAAAYWNzcAAAAAAAAAAAAAAAAAAA",
@@ -116,6 +114,7 @@ function FormClient() {
         }
       )
       .then((response) => {
+        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         createClientAction();
         displayListAction();
         console.log(response);
@@ -285,7 +284,7 @@ function FormClient() {
               id="interes"
               label="Interes"
               value={interestSelect}
-              onChange={handleChangeInterest}
+              onChange={(e) =>  setInterestSelect(e.target.value)}
             >
               <MenuItem value="">
                 <em>None</em>

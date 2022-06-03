@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { getClientsSuccess } from "../actions/clientsAction";
 import { useDispatch } from "react-redux";
 import Client from "./Client";
-import { displayForm } from "../actions/displayAction";
+import { displayForm, displayWelcome } from "../actions/displayAction";
 
 function ListClients() {
   //const [{ clients },   dispatch] = useStateValue();
@@ -38,13 +38,17 @@ function ListClients() {
 
   const getClientsAction = (clients) => dispatch(getClientsSuccess(clients));
   const displayFormAction = () => dispatch(displayForm());
+  const displayWelcomeAction = () => dispatch(displayWelcome());
 
   const showFormClient = () => {
     displayFormAction();
   };
 
+  const showWelcome = () => {
+    displayWelcomeAction();
+  };
+
   const getClients = async () => {
-    console.log(userid);
     await clientAxios
       .post(
         "api/Cliente/Listado",
@@ -66,7 +70,8 @@ function ListClients() {
       });
   };
 
-  const getClientsFilter = async () => {
+  const getClientsFilter = async (event) => {
+    event.preventDefault();
     await clientAxios
       .post(
         "api/Cliente/Listado",
@@ -107,7 +112,7 @@ function ListClients() {
           <AddIcon />
           Agregar
         </IconButton>
-        <IconButton aria-label="back">
+        <IconButton aria-label="back" onClick={showWelcome}>
           <KeyboardBackspaceIcon />
           Regresar
         </IconButton>
@@ -146,7 +151,7 @@ function ListClients() {
             onChange={(e) => setIdentificacion(e.target.value)}
           />
 
-          <IconButton aria-label="search" onClick={getClientsFilter}>
+          <IconButton aria-label="search" onClick={(event)  =>  getClientsFilter(event)}>
             <SearchIcon />
           </IconButton>
         </Box>

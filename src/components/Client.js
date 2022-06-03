@@ -8,32 +8,35 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import clientAxios from "../config/axios";
 
-import { deleteClientSuccess, getClientEditSuccess } from "../actions/clientsAction";
+import {
+  deleteClientSuccess,
+  getClientEditSuccess,
+} from "../actions/clientsAction";
 import { displayEdit } from "../actions/displayAction";
 
 const Client = ({ client }) => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.user.user);
   const displayEditAction = () => dispatch(displayEdit());
-  const getClientEditAction = (client) => dispatch(getClientEditSuccess(client));
+  const getClientEditAction = (client) =>
+    dispatch(getClientEditSuccess(client));
 
-
-  const editClient = (id) => {
+  const editClient = (IdCliente) => {
     clientAxios
-          .get(`api/Cliente/Obtener/${id}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          })
-          .then((response) => {
-            getClientEditAction(response.data);
-            displayEditAction();
-            console.log(response);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+      .get(`api/Cliente/Obtener/${IdCliente}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        getClientEditAction(response.data);
+        displayEditAction();
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
-  const deleteClient = (id) => {
+  const deleteClient = (IdCliente) => {
     // Confirmacion de Sweet Alert
     Swal.fire({
       title: "Está seguro?",
@@ -46,19 +49,19 @@ const Client = ({ client }) => {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(deleteClientSuccess(id));
+        dispatch(deleteClientSuccess(IdCliente));
         clientAxios
-          .delete(`api/Cliente/Eliminar/${id}`, {
+          .delete(`api/Cliente/Eliminar/${IdCliente}`, {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then((response) => {
+            Swal.fire("Eliminado!", "El cliente ha sido eliminado.", "success");
+            console.log(IdCliente);
             console.log(response);
           })
           .catch((error) => {
             console.log(error);
           });
-        Swal.fire("Eliminado!", "El cliente ha sido eliminado.", "success");
-        console.log(id);
       }
     });
   };

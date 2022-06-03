@@ -21,7 +21,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         error: null,
-        // clients:  action.payload,
+        clients:  action.payload,
       };
 
     case CREATE_CLIENT:
