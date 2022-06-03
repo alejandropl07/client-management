@@ -74,18 +74,18 @@ function UpdateClient() {
 
   const submitEditarCliente = async (event) => {
     event.preventDefault();
-  /*  if (
-      nombreRef.current.value.trim() === "" ||
-      apellidosRef.current.value.trim() === "" ||
-      identificacionRef.current.value.trim() === "" ||
-      telefonoCelularRef.current.value.trim() === "" ||
-      otroTelefonoRef.current.value.trim() === "" ||
-      direccionRef.current.value.trim() === "" ||
-      resenaPersonalRef.current.value.trim() === ""
+    if (
+      nombre.trim() === "" ||
+      apellidos.trim() === "" ||
+      identificacion.trim() === "" ||
+      celular.trim() === "" ||
+      otroTelefono.trim() === "" ||
+      direccion.trim() === "" ||
+      resennaPersonal.trim() === ""
     ) {
       errorValid();
       return;
-    }*/
+    }
     successValid();
     await clientAxios
       .post(
@@ -290,7 +290,10 @@ function UpdateClient() {
             </Select>
           </FormControl>
         </Box>
-        <Box sx={{ marginLeft: "295px" }}>
+        <Box  sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}>
           <TextField
             sx={{ minWidth: "76%" }}
             required
@@ -301,7 +304,10 @@ function UpdateClient() {
             onChange={(e) => setDireccion(e.target.value)}
           />
         </Box>
-        <Box sx={{ marginLeft: "295px" }}>
+        <Box  sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}>
           <TextField
             sx={{ minWidth: "76%" }}
             required

@@ -17,7 +17,6 @@ import { displayEdit } from "../actions/displayAction";
 const Client = ({ client, getClients }) => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.user.user);
-  const { userid } = useSelector((state) => state.user.user);
   const displayEditAction = () => dispatch(displayEdit());
   const getClientEditAction = (client) =>
     dispatch(getClientEditSuccess(client));

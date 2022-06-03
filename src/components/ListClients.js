@@ -48,7 +48,7 @@ function ListClients() {
     displayWelcomeAction();
   };
 
- const getClients = async () => {
+  const getClients = async () => {
     await clientAxios
       .post(
         "api/Cliente/Listado",
@@ -99,34 +99,32 @@ function ListClients() {
   return (
     <Fragment>
       <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <IconButton aria-label="clients">
-          <AccountCircleIcon /> Consulta de clientes
-        </IconButton>
-
-        <IconButton aria-label="save" onClick={showFormClient}>
-          <AddIcon />
-          Agregar
-        </IconButton>
-        <IconButton aria-label="back" onClick={showWelcome}>
-          <KeyboardBackspaceIcon />
-          Regresar
-        </IconButton>
-      </Box>
-
-      <Box
         component="form"
-        // onSubmit={createClient}
         sx={{
           "& .MuiTextField-root": { m: 1, width: "25ch" },
         }}
         noValidate
         autoComplete="off"
       >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <IconButton aria-label="clients">
+            <AccountCircleIcon /> Consulta de clientes
+          </IconButton>
+
+          <IconButton aria-label="save" onClick={showFormClient}>
+            <AddIcon />
+            Agregar
+          </IconButton>
+          <IconButton aria-label="back" onClick={showWelcome}>
+            <KeyboardBackspaceIcon />
+            Regresar
+          </IconButton>
+        </Box>
         <Box
           sx={{
             display: "flex",
@@ -151,7 +149,10 @@ function ListClients() {
             onChange={(e) => setIdentificacion(e.target.value)}
           />
 
-          <IconButton aria-label="search" onClick={(event)  =>  getClientsFilter(event)}>
+          <IconButton
+            aria-label="search"
+            onClick={(event) => getClientsFilter(event)}
+          >
             <SearchIcon />
           </IconButton>
         </Box>
@@ -161,14 +162,20 @@ function ListClients() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Identificación</TableCell>
-              <TableCell align="right">Nombre completo</TableCell>
-              <TableCell align="right">Acciones</TableCell>
+              <TableCell>
+                <strong>Identificación</strong>
+              </TableCell>
+              <TableCell align="right">
+                <strong>Nombre completo</strong>
+              </TableCell>
+              <TableCell align="right">
+                <strong>Acciones</strong>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {clients?.map((client) => (
-              <Client key={client.id} client={client} getClients={getClients}/>
+              <Client key={client.id} client={client} getClients={getClients} />
             ))}
           </TableBody>
         </Table>

@@ -23,6 +23,7 @@ import FormClient from "./FormClient";
 import UpdateClient from "./UpdateClient";
 import { useDispatch, useSelector } from "react-redux";
 import Welcome from "./Welcome";
+import Error from "./Error";
 import { logoutSuccess } from "../actions/userAction";
 
 const drawerWidth = 240;
@@ -82,6 +83,7 @@ function DashboardContent() {
   const { formClient } = useSelector((state) => state.display);
   const { listClient } = useSelector((state) => state.display);
   const { editClient } = useSelector((state) => state.display);
+  const { welcome } = useSelector((state) => state.display);
   const { username } = useSelector((state) => state.user.user);
   const { expiration } = useSelector((state) => state.user.user);
 
@@ -178,7 +180,6 @@ function DashboardContent() {
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-              {/* Recent Orders */}
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
                   {listClient ? (
@@ -187,8 +188,10 @@ function DashboardContent() {
                     <FormClient />
                   ) : editClient ? (
                     <UpdateClient />
-                  ) : (
+                  ) : welcome ? (
                     <Welcome />
+                  ) : (
+                    <Error />
                   )}
                 </Paper>
               </Grid>

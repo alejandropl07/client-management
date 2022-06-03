@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
@@ -50,7 +50,6 @@ function FormClient() {
     dispatch(getInterestSuccess(interest));
 
   const createClientAction = () => dispatch(createClientSuccess());
-  
 
   const successValid = () => dispatch(validateSuccess());
   const errorValid = () => dispatch(validateError());
@@ -126,7 +125,7 @@ function FormClient() {
           showCancelButton: false,
           confirmButtonColor: "#3085d6",
           confirmButtonText: "Aceptar!",
-        })
+        });
         console.log(error);
       });
   };
@@ -283,7 +282,7 @@ function FormClient() {
               id="interes"
               label="Interes"
               value={interestSelect}
-              onChange={(e) =>  setInterestSelect(e.target.value)}
+              onChange={(e) => setInterestSelect(e.target.value)}
             >
               <MenuItem value="">
                 <em>None</em>
@@ -296,7 +295,10 @@ function FormClient() {
             </Select>
           </FormControl>
         </Box>
-        <Box sx={{ marginLeft: "295px" }}>
+        <Box  sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}>
           <TextField
             sx={{ minWidth: "76%" }}
             required
@@ -307,7 +309,10 @@ function FormClient() {
             onChange={(e) => setDireccion(e.target.value)}
           />
         </Box>
-        <Box sx={{ marginLeft: "295px" }}>
+        <Box  sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}>
           <TextField
             sx={{ minWidth: "76%" }}
             required
@@ -319,15 +324,21 @@ function FormClient() {
           />
         </Box>
       </div>
-      {error  ? <Typography
-        component="h1"
-        variant="h5"
-        color="inherit"
-        noWrap
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-      >
-        Todos los campos son obligatorios
-      </Typography> : null}
+      {error ? (
+        <Typography
+          component="h1"
+          variant="h5"
+          color="inherit"
+          noWrap
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          Todos los campos son obligatorios
+        </Typography>
+      ) : null}
     </Box>
   );
 }
